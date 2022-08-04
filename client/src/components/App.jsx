@@ -1,55 +1,68 @@
 import React from 'react';
+import movieData from './MovieData.js'
 import MovieList from './MovieList.jsx'
 import Search from './Search.jsx'
-
-// const App = (props) => (
-//   <div>
-//     <input type="text" placeholder="Search..."/>
-//     <h1>Movie List:</h1>
-//     {movieData.map((movie) => {
-//       return (
-//         <div>
-//           <p>{movie.title}</p>
-//         </div>
-//       );
-//     })}
-//   </div>
-// );
-
-// const App = (props) => {
-//   return (
-//     <div>
-//     <h1>Movie List:</h1>
-//     <MovieList />
-//   </div>
-//   )
-// }
+import AddMovie from './AddMovie.jsx'
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      value: '',
+      movies: movieData,
+      // single source of truth:
+      allMovies: movieData
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  handleChange(event) {
+    // let filteredMovies = this.state.allMovies.filter(movie => movie.title.toLowerCase().includes(event.target.value.toLowerCase()))
+    // if (filteredMovies.length === 0) {
+    //   this.setState({movies:[{title: 'no movie by that name found'}]})
+    // } else {
+    //   this.setState({movies:filteredMovies.slice()})
+    // }
+    console.log(event.target.value)
+  }
+
+  handleSubmit(event) {
+    // let filteredMovies = this.state.allMovies.filter(movie => movie.title.toLowerCase().includes(event.target.value.toLowerCase()))
+    // if (filteredMovies.length === 0) {
+    //   this.setState({movies:[{title: 'no movie by that name found'}]})
+    // } else {
+    //   this.setState({movies:filteredMovies.slice()})
+    // }
+    this.setState({movies:[{title: 'no movie by that name found'}]})
+    event.preventDefault();
+  }
+
+  handleAddMovie(event) {}
+
   render() {
-    return(
-      <div>
-      <Search />
-      <h1>Movie List:</h1>
-      <MovieList />
-    </div>
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <span className = 'topBar'>
+          < AddMovie />
+          <input type = "submit" value = "Add"/>
+        </span>
+        <div>
+          <span className = "bottomBar">
+            <Search
+            currentValue = {this.state.value}
+            onChange = {this.handleChange}
+            onSubmit = {this.handleSubmit}
+            />
+            {/* <form onSubmit = {this.handleSubmit}> */}
+            <input type="submit" value="Go!"/>
+            {/* </form> */}
+          </span>
+        <MovieList movies = {this.state.movies}/>
+        </div>
+      </form>
     )
   }
 }
-
-
-// to test for console.log
-// const App = (props) => {
-//   return (
-//     <div>
-//     <h1>Movie List:</h1>
-//   </div>
-//   )
-// }
 
 export default App;
