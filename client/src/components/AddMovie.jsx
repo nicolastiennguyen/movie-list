@@ -5,6 +5,9 @@ const AddMovie = (props) => {
     <
       input type = "search"
       placeholder = "Add movie title here"
+      value = {props.currentValue}
+      onChange = {props.onChange}
+      onSubmit = {props.onSubmit}
     />
   )
 }

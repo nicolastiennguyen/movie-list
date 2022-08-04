@@ -6,11 +6,23 @@ body {
 input {
   margin-top: 20px;
   width: 300px;
-  height: 40px;
+  height: 46px;
   padding-left: 10px;
 }
 
 p {
   margin: 20px;
   font-size: 18px;
+}
+
+#add {
+  background-color:lightgreen
+  margin-top: 20px;
+  width: 300px;
+  height: 40px;
+}
+
+#watch {
+  width: 200px;
+  height: 46px;
 }

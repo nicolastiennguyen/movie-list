@@ -10,47 +10,79 @@ class App extends React.Component {
     this.state = {
       value: '',
       movies: movieData,
-      // single source of truth:
-      allMovies: movieData
+      addMovieValue: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAddMovieChange = this.handleAddMovieChange.bind(this);
+    this.handleAddMovie = this.handleAddMovie.bind(this);
   }
 
   handleChange(event) {
     // this is how you would update the search live:
-    // let filteredMovies = this.state.allMovies.filter(movie => movie.title.toLowerCase().includes(event.target.value.toLowerCase()))
+    // let filteredMovies = this.state.movies.filter(movie => movie.title.toLowerCase().includes(event.target.value.toLowerCase()))
     // if (filteredMovies.length === 0) {
     //   this.setState({movies:[{title: 'no movie by that name found'}]})
     // } else {
     //   this.setState({movies:filteredMovies.slice()})
     // }
+
+    // this changes the state of the value to what is typed
     this.setState({value:event.target.value})
+
+    // if nothing is typed, display all movies
+    if (event.target.value === '') {
+      this.setState({movies: movieData})
+    }
   }
 
   handleSubmit(event) {
     event.preventDefault();
     let currentSearch = this.state.value;
-    let filteredMovies = this.state.allMovies.filter(movie => movie.title.toLowerCase().includes(currentSearch.toLowerCase()))
+    let filteredMovies = this.state.movies.filter(movie => movie.title.toLowerCase().includes(currentSearch.toLowerCase()))
     if (filteredMovies.length === 0) {
       this.setState({movies:[{title: 'no movie by that name found'}]})
     } else {
-      this.setState({movies:filteredMovies.slice()})
+      this.setState({movies:filteredMovies})
     }
   }
 
-  handleAddMovie(event) {}
+
+  handleAddMovieChange(event) {
+    this.setState({addMovieValue:event.target.value})
+  }
+
+  handleAddMovie(event) {
+    event.preventDefault()
+    let addedMovie = this.state.addMovieValue
+    movieData.push({title: addedMovie})
+    this.setState({movies:movieData})
+  }
+
+  // displayUnwatchedButton(event) {
+
+  // }
+
+  // displayWatchedButton(event) {
+
+  // }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} value = {this.state.value}>
+      <form onSubmit={this.handleSubmit}>
         <span className = 'topBar'>
-          < AddMovie />
-          <input type = "submit" value = "Add"/>
+          < AddMovie
+          currentValue = {this.state.addMovieValue}
+          onChange = {this.handleAddMovieChange}
+          onSubmit = {this.handleAddMovie}
+          />
+          <button id = 'add' onClick={this.handleAddMovie}>Add</button>
         </span>
         <div>
           <span className = "bottomBar">
-            <Search id = "search"
+            <button id = 'watch'>Watched</button>
+            <button id = 'watch'>To Watch</button>
+            <Search
             currentValue = {this.state.value}
             onChange = {this.handleChange}
             onSubmit = {this.handleSubmit}
