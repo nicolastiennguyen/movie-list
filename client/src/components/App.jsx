@@ -20,12 +20,12 @@ class App extends React.Component {
 
   handleChange(event) {
     // this is how you would update the search live:
-    // let filteredMovies = this.state.movies.filter(movie => movie.title.toLowerCase().includes(event.target.value.toLowerCase()))
-    // if (filteredMovies.length === 0) {
-    //   this.setState({movies:[{title: 'no movie by that name found'}]})
-    // } else {
-    //   this.setState({movies:filteredMovies.slice()})
-    // }
+    let filteredMovies = this.state.movies.filter(movie => movie.title.toLowerCase().includes(event.target.value.toLowerCase()))
+    if (filteredMovies.length === 0) {
+      this.setState({movies:[{title: 'no movie by that name found'}]})
+    } else {
+      this.setState({movies:filteredMovies.slice()})
+    }
 
     // this changes the state of the value to what is typed
     this.setState({value:event.target.value})
@@ -37,14 +37,16 @@ class App extends React.Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
-    let currentSearch = this.state.value;
-    let filteredMovies = this.state.movies.filter(movie => movie.title.toLowerCase().includes(currentSearch.toLowerCase()))
-    if (filteredMovies.length === 0) {
-      this.setState({movies:[{title: 'no movie by that name found'}]})
-    } else {
-      this.setState({movies:filteredMovies})
-    }
+    // this is how you would show movies on submit:
+    // since this is all commented out, the Go! button does nothing
+    // event.preventDefault();
+    // let currentSearch = this.state.value;
+    // let filteredMovies = this.state.movies.filter(movie => movie.title.toLowerCase().includes(currentSearch.toLowerCase()))
+    // if (filteredMovies.length === 0) {
+    //   this.setState({movies:[{title: 'no movie by that name found'}]})
+    // } else {
+    //   this.setState({movies:filteredMovies})
+    // }
   }
 
 
