@@ -18,45 +18,44 @@ class App extends React.Component {
   }
 
   handleChange(event) {
+    // this is how you would update the search live:
     // let filteredMovies = this.state.allMovies.filter(movie => movie.title.toLowerCase().includes(event.target.value.toLowerCase()))
     // if (filteredMovies.length === 0) {
     //   this.setState({movies:[{title: 'no movie by that name found'}]})
     // } else {
     //   this.setState({movies:filteredMovies.slice()})
     // }
-    console.log(event.target.value)
+    this.setState({value:event.target.value})
   }
 
   handleSubmit(event) {
-    // let filteredMovies = this.state.allMovies.filter(movie => movie.title.toLowerCase().includes(event.target.value.toLowerCase()))
-    // if (filteredMovies.length === 0) {
-    //   this.setState({movies:[{title: 'no movie by that name found'}]})
-    // } else {
-    //   this.setState({movies:filteredMovies.slice()})
-    // }
-    this.setState({movies:[{title: 'no movie by that name found'}]})
     event.preventDefault();
+    let currentSearch = this.state.value;
+    let filteredMovies = this.state.allMovies.filter(movie => movie.title.toLowerCase().includes(currentSearch.toLowerCase()))
+    if (filteredMovies.length === 0) {
+      this.setState({movies:[{title: 'no movie by that name found'}]})
+    } else {
+      this.setState({movies:filteredMovies.slice()})
+    }
   }
 
   handleAddMovie(event) {}
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} value = {this.state.value}>
         <span className = 'topBar'>
           < AddMovie />
           <input type = "submit" value = "Add"/>
         </span>
         <div>
           <span className = "bottomBar">
-            <Search
+            <Search id = "search"
             currentValue = {this.state.value}
             onChange = {this.handleChange}
             onSubmit = {this.handleSubmit}
             />
-            {/* <form onSubmit = {this.handleSubmit}> */}
             <input type="submit" value="Go!"/>
-            {/* </form> */}
           </span>
         <MovieList movies = {this.state.movies}/>
         </div>
