@@ -3,6 +3,7 @@ import movieData from './MovieData.js'
 import MovieList from './MovieList.jsx'
 import Search from './Search.jsx'
 import AddMovie from './AddMovie.jsx'
+import Toggle from './Toggle.jsx'
 
 class App extends React.Component {
   constructor(props) {
@@ -49,7 +50,6 @@ class App extends React.Component {
     // }
   }
 
-
   handleAddMovieChange(event) {
     this.setState({addMovieValue:event.target.value})
   }
@@ -60,14 +60,6 @@ class App extends React.Component {
     movieData.push({title: addedMovie})
     this.setState({movies:movieData})
   }
-
-  // displayUnwatchedButton(event) {
-
-  // }
-
-  // displayWatchedButton(event) {
-
-  // }
 
   render() {
     return (
