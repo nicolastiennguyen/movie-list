@@ -73,16 +73,12 @@ class App extends React.Component {
           <button id = 'add' onClick={this.handleAddMovie}>Add</button>
         </span>
         <div>
-          <span className = "bottomBar">
-            <button id = 'watch'>Watched</button>
-            <button id = 'watch'>To Watch</button>
             <Search
             currentValue = {this.state.value}
             onChange = {this.handleChange}
             onSubmit = {this.handleSubmit}
             />
             <input type="submit" value="Go!"/>
-          </span>
         <MovieList movies = {this.state.movies}/>
         </div>
       </form>
