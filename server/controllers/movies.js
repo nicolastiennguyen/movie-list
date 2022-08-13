@@ -13,7 +13,7 @@ module.exports = {
 
   post: (req, res) => {
     console.log(req.body)
-    var params = [req.body.title];
+    var params = [req.body.title, req.body.watched];
     models.movies.post(params, (err, movies) => {
       if (err) {
         console.log(err);

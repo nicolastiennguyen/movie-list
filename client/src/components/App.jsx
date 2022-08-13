@@ -12,14 +12,18 @@ class App extends React.Component {
     this.state = {
       value: '',
       movies: movieData,
-      addMovieValue: ''
+      addMovieValue: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleAddMovieChange = this.handleAddMovieChange.bind(this);
     this.handleAddMovie = this.handleAddMovie.bind(this);
+    this.handleWatched = this.handleWatched.bind(this);
+    this.handleToWatch = this.handleToWatch.bind(this);
+    this.changeWatchStatus = this.changeWatchStatus.bind(this);
   }
 
+  // initial rendering of the page:
   componentDidMount() {
     axios.get('/movies')
       .then((res) => {
@@ -64,11 +68,47 @@ class App extends React.Component {
   }
 
   handleAddMovie(event) {
-    event.preventDefault()
     let addedMovie = this.state.addMovieValue
-    movieData.push({title: addedMovie})
-    this.setState({movies:movieData})
+    event.preventDefault()
+    axios.post('/movies', {
+        title: addedMovie,
+        watched: 0
+      })
+    axios.get('/movies')
+      .then((res) => {
+        let dbMovies = res.data;
+        this.setState({movies: dbMovies});
+      })
   }
+
+  // put request on buttons?
+  handleWatched(event) {
+    event.preventDefault();
+    let watchedMovies = this.state.movies.filter(movie => {
+      return movie.watched === 1
+    })
+    this.setState({movies:watchedMovies})
+  }
+
+  handleToWatch(event) {
+    event.preventDefault();
+    let toWatchMovies = this.state.movies.filter(movie => {
+      return movie.watched === 0
+    })
+    this.setState({movies:toWatchMovies})
+  }
+
+  // input movie is from toggle
+  changeWatchStatus(movie) {
+    var copy = this.state.movies.slice();
+    for (let i = 0; i < copy.length; i++) {
+      if (movie.title === copy[i].title) {
+        copy[i].watched = 1 - copy[i].watched;
+      }
+    }
+    this.setState({movies:copy});
+  }
+  // create function and pass down function to movielist so that we can use this function in movielist
 
   render() {
     return (
@@ -82,13 +122,18 @@ class App extends React.Component {
           <button id = 'add' onClick={this.handleAddMovie}>Add</button>
         </span>
         <div>
+        <button id = 'Watched' onClick={this.handleWatched}>Watched</button>
+        <button id = 'To Watch' onClick={this.handleToWatch}>To Watch</button>
             <Search
             currentValue = {this.state.value}
             onChange = {this.handleChange}
             onSubmit = {this.handleSubmit}
             />
             <input type="submit" value="Go!"/>
-        <MovieList movies = {this.state.movies}/>
+        <MovieList
+        movies = {this.state.movies}
+        changeWatchStatus = {this.changeWatchStatus}
+        />
         </div>
       </form>
     )

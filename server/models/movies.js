@@ -13,7 +13,7 @@ module.exports = {
   },
 
   post: (params, callback) => {
-    var queryStr = 'INSERT INTO movies(title) VALUES(?)';
+    var queryStr = 'INSERT INTO movies(title, watched) VALUES(?, ?)';
     db.query(queryStr, params, function(err, movies) {
       if (err) {
         console.log(err);

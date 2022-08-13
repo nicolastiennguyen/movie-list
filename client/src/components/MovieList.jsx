@@ -7,13 +7,12 @@ const MovieList = (props) => (
     return (
       <div key = {movie.title}>
         <p>{movie.title}</p>
-        <Toggle />
+        <Toggle
+        movie = {movie}
+        changeWatchStatus = {props.changeWatchStatus}
+        />
       </div>
   )})
 )
 
 export default MovieList;
-
-// inside map
-// if watched --> render and return child
-// if not, then nothing happens to that child
