@@ -11,8 +11,9 @@ class App extends React.Component {
     super(props);
     this.state = {
       value: '',
-      movies: movieData,
       addMovieValue: '',
+      currentMovies: movieData,
+      allMovies: movieData
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,17 +29,20 @@ class App extends React.Component {
     axios.get('/movies')
       .then((res) => {
         let dbMovies = res.data;
-        this.setState({movies: dbMovies})
+        this.setState({
+          currentMovies: dbMovies,
+          allMovies: dbMovies
+        })
       })
   };
 
   handleChange(event) {
     // this is how you would update the search live:
-    let filteredMovies = this.state.movies.filter(movie => movie.title.toLowerCase().includes(event.target.value.toLowerCase()))
+    let filteredMovies = this.state.currentMovies.filter(movie => movie.title.toLowerCase().includes(event.target.value.toLowerCase()))
     if (filteredMovies.length === 0) {
-      this.setState({movies:[{title: 'no movie by that name found'}]})
+      this.setState({currentMovies:[{title: 'no movie by that name found'}]})
     } else {
-      this.setState({movies:filteredMovies.slice()})
+      this.setState({currentMovies:filteredMovies.slice()})
     }
 
     // this changes the state of the value to what is typed
@@ -46,7 +50,7 @@ class App extends React.Component {
 
     // if nothing is typed, display all movies
     if (event.target.value === '') {
-      this.setState({movies: movieData})
+      this.setState({currentMovies: movieData})
     }
   }
 
@@ -74,41 +78,44 @@ class App extends React.Component {
         title: addedMovie,
         watched: 0
       })
-    axios.get('/movies')
-      .then((res) => {
-        let dbMovies = res.data;
-        this.setState({movies: dbMovies});
-      })
+      .then(axios.get('/movies')
+        .then((res) => {
+          let dbMovies = res.data;
+          this.setState({
+            currentMovies: dbMovies,
+            allMovies: dbMovies
+          });
+        }))
   }
 
-  // put request on buttons?
   handleWatched(event) {
     event.preventDefault();
-    let watchedMovies = this.state.movies.filter(movie => {
+    let watchedMovies = this.state.allMovies.filter(movie => {
       return movie.watched === 1
     })
-    this.setState({movies:watchedMovies})
+    this.setState({currentMovies:watchedMovies})
   }
 
   handleToWatch(event) {
     event.preventDefault();
-    let toWatchMovies = this.state.movies.filter(movie => {
+    let toWatchMovies = this.state.allMovies.filter(movie => {
       return movie.watched === 0
     })
-    this.setState({movies:toWatchMovies})
+    this.setState({currentMovies:toWatchMovies})
   }
 
-  // input movie is from toggle
+  // input movie is from toggle.jsx
   changeWatchStatus(movie) {
-    var copy = this.state.movies.slice();
+    console.log(movie);
+    var copy = this.state.currentMovies.slice();
     for (let i = 0; i < copy.length; i++) {
       if (movie.title === copy[i].title) {
         copy[i].watched = 1 - copy[i].watched;
       }
     }
-    this.setState({movies:copy});
+    this.setState({currentMovies:copy});
   }
-  // create function and pass down function to movielist so that we can use this function in movielist
+
 
   render() {
     return (
@@ -131,7 +138,7 @@ class App extends React.Component {
             />
             <input type="submit" value="Go!"/>
         <MovieList
-        movies = {this.state.movies}
+        movies = {this.state.currentMovies}
         changeWatchStatus = {this.changeWatchStatus}
         />
         </div>
