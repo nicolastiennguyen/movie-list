@@ -4,6 +4,7 @@ import MovieList from './MovieList.jsx'
 import Search from './Search.jsx'
 import AddMovie from './AddMovie.jsx'
 import Toggle from './Toggle.jsx'
+const axios = require('axios');
 
 class App extends React.Component {
   constructor(props) {
@@ -18,6 +19,14 @@ class App extends React.Component {
     this.handleAddMovieChange = this.handleAddMovieChange.bind(this);
     this.handleAddMovie = this.handleAddMovie.bind(this);
   }
+
+  componentDidMount() {
+    axios.get('/movies')
+      .then((res) => {
+        let dbMovies = res.data;
+        this.setState({movies: dbMovies})
+      })
+  };
 
   handleChange(event) {
     // this is how you would update the search live:
